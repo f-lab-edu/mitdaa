@@ -3,27 +3,41 @@ package com.flab.mitdaa.user.service;
 import com.flab.mitdaa.user.dto.RegisterRequestDto;
 import com.flab.mitdaa.user.entity.User;
 import com.flab.mitdaa.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
-
 @Service
+@RequiredArgsConstructor
 public class RegisterService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public void registerUser(RegisterRequestDto req) {
-        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+
+    @Transactional
+    public User registerUser(RegisterRequestDto req) {
+        if (userRepository.findByEmail(req.email()).isPresent()) {
             throw new IllegalArgumentException("이미 가입된 이메일 입니다.");
         }
-        userRepository.saveUser(req.getUsername(),req.getEmail(),req.getPassword());
+        User user = User.builder()
+                .username(req.username())
+                .password(passwordEncoder.encode(req.password()))
+                .email(req.email())
+                .build();
+
+        return userRepository.save(user);
     }
 
     //유저 검색
     public List<User> getUsers() {
-        return userRepository.findUsers();
+        return userRepository.findAllBy();
     }
+
+
 }
