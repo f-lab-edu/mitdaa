@@ -6,20 +6,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "SELECT * FROM MUSERSTB", nativeQuery = true)
-    List<User> findUsers();
-
-    @Query(value = "SELECT * FROM MUSERSTB WHERE USER_EMAIL = :email", nativeQuery = true)
+    //findAll 사용.
+    List<User> findAllBy();
+    // 이메일 조회
     Optional<User> findByEmail(String email);
-
-    @Transactional
-    @Modifying
-    @Query(value = "INSERT INTO MUSERSTB (USER_NM, USER_EMAIL, PASSWORD) VALUES (:name, :email, :password)", nativeQuery = true)
-    void saveUser(String name,  String email, String password);
 
 }
