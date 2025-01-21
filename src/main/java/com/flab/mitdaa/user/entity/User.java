@@ -31,7 +31,6 @@ public class User {
     @Column(nullable = false , name="EMAIL_VERIFIED")
     private String emailVerified = "N";
 
-    //가입 시간 과 업데이트 시간 추가 필요
     @Column( name ="CREATE_DTIME")
     private String registerDtime;
 
