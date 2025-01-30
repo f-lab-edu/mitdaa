@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +21,7 @@ public class RegisterService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
 
     @Transactional
@@ -46,7 +46,7 @@ public class RegisterService {
         verificationTokenRepository.save(verificationToken);
 
         String verificationUrl = "http://localhost:8088/api/verify?token=" + verificationToken.getToken();
-//        emailService.sendEmail(user.getEmail(), "이메일 인증", "아래 링크를 클릭하여 이메일을 인증해주세요:\n" + verificationUrl);
+        emailService.sendEmail(user.getEmail(), "이메일 인증을 완료해주세요.", "아래 링크를 클릭하여 이메일을 인증해주세요:\n" + verificationUrl);
 
     }
     //유저 검색
