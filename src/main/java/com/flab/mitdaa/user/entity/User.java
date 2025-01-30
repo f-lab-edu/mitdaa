@@ -15,15 +15,13 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @NoArgsConstructor
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(nullable = false ,unique = true , name = "USER_EMAIL")
+    private String email;
 
     @Column(nullable = false , name = "USER_NM")
     private String username;
-
-    @Column(nullable = false ,unique = true , name = "USER_EMAIL")
-    private String email;
 
     @Column(nullable = false , name = "PASSWORD")
     private String password;
