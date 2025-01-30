@@ -19,6 +19,5 @@ public class RegisterController {
         System.out.println(req.toString());
         registerService.registerUser(req);
         return ResponseEntity.ok("이메일을 확인 후 인증 해주세요.");
-       
     }
 }

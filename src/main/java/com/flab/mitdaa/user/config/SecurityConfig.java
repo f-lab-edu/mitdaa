@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 생성 방지
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register").permitAll() // 인증 관련 API는 모든 요청 허용
+                        .requestMatchers("/api/**").permitAll() // API전체 허용
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 );
 
