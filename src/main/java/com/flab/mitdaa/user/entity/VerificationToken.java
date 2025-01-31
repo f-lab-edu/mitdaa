@@ -31,13 +31,13 @@ public class VerificationToken {
 
     @OneToOne
     @JoinColumn(name = "USER_EMAIL")
-    private User userEmail;
+    private User user;
 
     @Column(nullable = false , name = "EXPIRY_DTIME")
     private String expiryTime;
 
     @Column(nullable = false , name="EMAIL_VERIFIED")
-    private String emailVerified = "N";
+    private String emailVerified;
 
     @CreatedDate
     @Column(nullable = false , name = "CREATE_DTIME" ,updatable = false)
@@ -50,11 +50,14 @@ public class VerificationToken {
     @Builder
     private VerificationToken(User user) {
         this.token = UUID.randomUUID().toString();
-        this.userEmail = Objects.requireNonNull(user, "이메일은 반드시 존재해야합니다.");
+        this.user = Objects.requireNonNull(user, "이메일은 반드시 존재해야합니다.");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         this.expiryTime = LocalDateTime.now().plusMinutes(EMAIL_TOKEN_EXPIRATION_MINUTES).format(formatter);
         this.createDateTime = LocalDateTime.now().format(formatter);
         this.updateDateTime = LocalDateTime.now().format(formatter);
+        this.emailVerified = "N";
 
     }
+
+
 }
