@@ -1,10 +1,7 @@
 package com.flab.mitdaa.user.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,10 +14,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "MTOKENTB")
-public class VerificationToken {
-
-    private static final long EMAIL_TOKEN_EXPIRATION_MINUTES = 30;
+public class VerificationToken extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,35 +26,18 @@ public class VerificationToken {
     @Column(nullable = false , name = "TOKEN")
     private String token;
 
-    @OneToOne
+    @OneToOne // 수정 필요
     @JoinColumn(name = "USER_EMAIL")
     private User user;
 
     @Column(nullable = false , name = "EXPIRY_DTIME")
-    private String expiryTime;
+    private LocalDateTime expiryTime;
 
     @Column(nullable = false , name="EMAIL_VERIFIED")
     private String emailVerified;
 
-    @CreatedDate
-    @Column(nullable = false , name = "CREATE_DTIME" ,updatable = false)
-    private String createDateTime;
 
-    @LastModifiedDate
-    @Column(nullable = false , name ="UPDATE_DTIME")
-    private String updateDateTime;
 
-    @Builder
-    private VerificationToken(User user) {
-        this.token = UUID.randomUUID().toString();
-        this.user = Objects.requireNonNull(user, "이메일은 반드시 존재해야합니다.");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        this.expiryTime = LocalDateTime.now().plusMinutes(EMAIL_TOKEN_EXPIRATION_MINUTES).format(formatter);
-        this.createDateTime = LocalDateTime.now().format(formatter);
-        this.updateDateTime = LocalDateTime.now().format(formatter);
-        this.emailVerified = "N";
-
-    }
 
 
 }

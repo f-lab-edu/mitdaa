@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +22,15 @@ public class VerificationService {
     private final EmailService emailService;
 
 
+
+
     /*메일 인증하기 서비스*/
     @Transactional
     public void verifyEmail(String token){
+
+
         /*토큰 유효청 체크 */
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
-//              .filter(vt -> !"Y".equals(vt.getEmailVerified()))  분기처리 한번에  불가능?
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 토큰입니다."));
 
         /*토큰 인증 여부 체크*/
@@ -35,16 +40,14 @@ public class VerificationService {
 
         /*토큰 기한 만료 체크 */
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime expiryDateTime = LocalDateTime.parse(verificationToken.getExpiryTime(), formatter);
+        LocalDateTime expiryDateTime = verificationToken.getExpiryTime();
         if (expiryDateTime.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("토큰 기한이 만료되었습니다.");
         }
 
         /*상태 업데이트 */
-        verificationToken.setUpdateDateTime(LocalDateTime.now().format(formatter));
         verificationToken.setEmailVerified("Y");
         verificationToken.getUser().setEmailVerified("Y");
-        verificationToken.getUser().setUpdateDtime(LocalDateTime.now().format(formatter));
     }
 
 
@@ -52,7 +55,6 @@ public class VerificationService {
     @Transactional
     public void resendVerifyEmail(String email){
 
-        System.out.println("Email: " + email);
         //이메일이 DB에 이미 가입되어있는지 확인
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일로 가입된 계정이 없습니다. 다시 확인해주세요."));
