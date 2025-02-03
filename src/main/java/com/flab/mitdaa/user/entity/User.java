@@ -29,6 +29,6 @@ public class User extends BaseTime {
     private String password;
 
     @Column(nullable = false , name="EMAIL_VERIFIED")
-    private String emailVerified;
+    private boolean emailVerified;
 
 }

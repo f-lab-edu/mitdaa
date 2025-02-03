@@ -36,7 +36,6 @@ public class RegisterService {
                 .token(UUID.randomUUID().toString())
                 .user(user)
                 .expiryTime(LocalDateTime.now().plusMinutes(EMAIL_TOKEN_EXPIRATION_MINUTES))
-                .emailVerified("N")
                 .build();
 
         return verificationTokenRepository.save(verificationToken);
@@ -52,7 +51,6 @@ public class RegisterService {
                 .username(req.username())
                 .password(passwordEncoder.encode(req.password()))
                 .email(req.email())
-                .emailVerified("N")
                 .build();
 
          userRepository.save(user);
