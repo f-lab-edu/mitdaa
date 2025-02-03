@@ -34,10 +34,8 @@ public class VerificationToken extends BaseTime{
     private LocalDateTime expiryTime;
 
     @Column(nullable = false , name="EMAIL_VERIFIED")
-    private String emailVerified;
+    private boolean emailVerified;
 
 
-
-
-
+  
 }

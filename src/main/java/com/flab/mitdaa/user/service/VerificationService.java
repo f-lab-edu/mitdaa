@@ -17,10 +17,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VerificationService {
 
-    private final VerificationTokenRepository verificationTokenRepository;
+    private final VerificationTokenRepository verificationTokenRepository ;
     private final UserRepository userRepository;
     private final EmailService emailService;
-
 
 
 
@@ -28,26 +27,24 @@ public class VerificationService {
     @Transactional
     public void verifyEmail(String token){
 
-
         /*토큰 유효청 체크 */
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 토큰입니다."));
 
         /*토큰 인증 여부 체크*/
-        if("Y".equals(verificationToken.getEmailVerified())){
+        if(verificationToken.isEmailVerified()){
                throw new IllegalArgumentException("이미 인증이 완료된 토큰입니다.");
         }
 
         /*토큰 기한 만료 체크 */
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime expiryDateTime = verificationToken.getExpiryTime();
         if (expiryDateTime.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("토큰 기한이 만료되었습니다.");
         }
 
         /*상태 업데이트 */
-        verificationToken.setEmailVerified("Y");
-        verificationToken.getUser().setEmailVerified("Y");
+        verificationToken.setEmailVerified(true);
+        verificationToken.getUser().setEmailVerified(true);
     }
 
 
@@ -59,7 +56,7 @@ public class VerificationService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일로 가입된 계정이 없습니다. 다시 확인해주세요."));
 
-        if("Y".equals(user.getEmailVerified())){
+        if(user.isEmailVerified()){
             throw new IllegalArgumentException("해당 이메일은 이미 인증이 완료되었습니다.");
         }
         /* 이메일 재전송 (새 토큰) */
