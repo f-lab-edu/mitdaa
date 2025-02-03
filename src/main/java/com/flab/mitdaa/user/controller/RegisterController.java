@@ -16,7 +16,7 @@ public class RegisterController {
 
     @PostMapping
     public void register(@RequestBody RegisterRequestDto req) {
-        req.check(); // valid check
+        req.check();
         registerService.registerUser(req);
     }
 }
