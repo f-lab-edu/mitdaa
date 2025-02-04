@@ -28,7 +28,7 @@ public class VerificationController {
 
 
     @PostMapping("/resend")
-    public void resendEmail(@RequestBody User req) {  // key 값을 알수가 없다, 스웨거에서도 확인 불가 . map 사용시 , 객체로 만들어서 수정 필요. void로 변경
+    public void resendEmail(@RequestBody User req) {
         verificationService.resendVerifyEmail(req.getEmail());
     }
 }

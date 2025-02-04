@@ -1,11 +1,12 @@
 package com.flab.mitdaa.user.service;
 
+import com.flab.mitdaa.exception.ErrorType;
+import com.flab.mitdaa.exception.MitdaException;
 import com.flab.mitdaa.user.dto.RegisterRequestDto;
 import com.flab.mitdaa.user.entity.User;
 import com.flab.mitdaa.user.entity.VerificationToken;
 import com.flab.mitdaa.user.repository.UserRepository;
 import com.flab.mitdaa.user.repository.VerificationTokenRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,7 +31,7 @@ public class RegisterService {
 
     /*토큰 생성 메서드*/
     public VerificationToken createVerificationToken(User user) {
-        Objects.requireNonNull(user, "이메일은 반드시 존재해야합니다.");
+//        Objects.requireNonNull(user, "이메일은 반드시 존재해야합니다.");
         VerificationToken verificationToken = VerificationToken.builder()
                 .token(UUID.randomUUID().toString())
                 .user(user)
@@ -44,7 +44,7 @@ public class RegisterService {
     @Transactional
     public void registerUser(RegisterRequestDto req) {
         if (userRepository.findByEmail(req.email()).isPresent()) {
-            throw new IllegalArgumentException("이미 가입된 이메일 입니다.");
+            throw new MitdaException(ErrorType.EMAIL_DUPLICATED);
         }
         /* 유저 저장 */
         User user = User.builder()
