@@ -1,41 +1,22 @@
 package com.flab.mitdaa.user.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "MTOKENTB")
-public class VerificationToken extends BaseTime{
+@RedisHash(value = "VERIFICATION_TOKEN", timeToLive = 600) // TTL 10분 설정
+public class VerificationToken implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false , name = "TOKEN")
-    private String token;
-
-    @OneToOne // 수정 필요
-    @JoinColumn(name = "USER_EMAIL")
-    private User user;
-
-    @Column(nullable = false , name = "EXPIRY_DTIME")
-    private LocalDateTime expiryTime;
-
-    @Column(nullable = false , name="EMAIL_VERIFIED")
-    private boolean emailVerified;
-
-
-  
+    private String token; // 인증 토큰
+    private String email; // 메일
+    private LocalDateTime expiryTime; // 만료 시간
 }
