@@ -23,7 +23,7 @@ public class VerificationController {
     @GetMapping("/verify")
     public  void verifyEmail(@RequestParam String token) {
         log.info("token!!!!!!!!!" + token);
-        verificationService.verifyEmail(token);
+        verificationService.verifyEmail(token );
     }
 
 
