@@ -39,7 +39,10 @@ public class RegisterService {
          /* Redis에 토큰 저장 */
          String token = verificationService.createVerificationToken(user.getEmail());
 
-        // verificationService에 빼서 호출 transaction에 같이 있으면 안됨.
+        sendEmailVerification(user, token);
+    }
+
+    public void sendEmailVerification(User user , String token) {
         String verificationUrl = "http://localhost:8088/api/verify?token=" + token;
         emailService.sendEmail(user.getEmail(), "이메일 인증을 완료해주세요.", "아래 링크를 클릭하여 이메일을 인증해주세요:\n" + verificationUrl);
 
