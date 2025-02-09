@@ -22,7 +22,7 @@ public class User extends BaseTime {
     @Column(nullable = false ,unique = true , name = "USER_EMAIL")
     private String email;
 
-    @Column(nullable = false , name = "USER_NM")
+    @Column(nullable = false , name = "USER_NM")  // user_name ,  소문자로 적는다.
     private String username;
 
     @Column(nullable = false , name = "PASSWORD")
