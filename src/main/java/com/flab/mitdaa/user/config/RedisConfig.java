@@ -1,6 +1,7 @@
 package com.flab.mitdaa.user.config;
 
 
+import com.flab.mitdaa.user.entity.VerificationToken;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 
@@ -42,8 +44,11 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        // Jackson2JsonRedisSerializer 사용하여 직렬화 방식 변경
+        Jackson2JsonRedisSerializer<VerificationToken> serializer = new Jackson2JsonRedisSerializer<>(VerificationToken.class);
+        template.setDefaultSerializer(serializer);
+//        template.setKeySerializer(new StringRedisSerializer());
+//        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return template;
     }
 
