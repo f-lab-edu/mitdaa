@@ -18,6 +18,5 @@ Mitdaa는 Instagram, 취업을 준비하는 사람들에게 현직자의 경험�
     
 2. CI/CD를 통한 자동화된 빌드 및 배포 과정을 구축하여 원활한 협업 배경에 대한 이해
 
-
-✅ 사용 기술 및 개발 환경
+# 사용기술 및 개발 환경
 Java, Spring Boot, IntelliJ, Gradle, JPA, MySQL, Redis, Jenkins 
