@@ -1,7 +1,7 @@
 package com.flab.mitdaa.user.service;
 
 import com.flab.mitdaa.exception.ErrorType;
-import com.flab.mitdaa.exception.MitdaException;
+import com.flab.mitdaa.exception.MitdaaException;
 import com.flab.mitdaa.user.dto.RegisterRequestDto;
 import com.flab.mitdaa.user.entity.User;
 import com.flab.mitdaa.user.repository.UserRepository;
@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +26,8 @@ public class RegisterService {
     @Transactional
     public void registerUser(RegisterRequestDto req) {
         if (userRepository.findByEmail(req.email()).isPresent()) {
-            throw new MitdaException(ErrorType.EMAIL_DUPLICATED);
+            throw new MitdaaException(ErrorType.EMAIL_DUPLICATED , Map.of("Email" , req.email()) ,
+                    (logMessage) -> System.out.println("Log" + logMessage));
         }
         /* 유저 저장 */
         User user = User.builder()
@@ -34,7 +37,6 @@ public class RegisterService {
                 .build();
 
          userRepository.save(user);
-
 
          /* Redis에 토큰 저장 */
          String token = verificationService.createVerificationToken(user.getEmail());
