@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:latest
+    container_name: dev-mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234            # root 비밀번호 설정
+      MYSQL_DATABASE: devmysql             # 기본 데이터베이스 이름 설정
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"                         # 호스트의 3306 포트를 컨테이너의 3306 포트와 연결
+    volumes:
+      - mysql-data:/var/lib/mysql          # 데이터를 지속적으로 저장할 볼륨 연결
+    networks:
+      - default                            # 기본 네트워크 사용
+
+  redis:
+    image: redis:latest                    # Redis 최신 이미지 사용
+    container_name: dev-redis              # Redis 컨테이너 이름
+    ports:
+      - "6379:6379"                        # 호스트의 6379 포트를 Redis 컨테이너의 6379 포트와 연결
+    networks:
+      - default                            # 기본 네트워크 사용
+
+volumes:
+  mysql-data:                              # MySQL 데이터를 저장할 볼륨 정의
+
+networks:
+  default:                                  # 기본 네트워크 설정
+    driver: bridge
