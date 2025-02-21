@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
  public enum ErrorType {
 
+
    // 유저 관련 , 인증관련 코드 나누기
     EMAIL_DUPLICATED(4001, "이미 사용중인 이메일 입니다.", HttpStatus.BAD_REQUEST),
     INVALID_EMAIL(4002, "유효하지 않은 이메일 형식입니다.", HttpStatus.BAD_REQUEST),
@@ -20,8 +21,11 @@ import org.springframework.http.HttpStatus;
     VERIFIED_EMAIL(4009, "해당 이메일은 이미 인증이 완료되었습니다." , HttpStatus.BAD_REQUEST),
     NOT_EXIST_EMAIL(4010 , "해당 이메일로 가입된 계정이 없습니다. 다시 확인해주세요." ,HttpStatus.BAD_REQUEST);
 
+
     private final int code;
     private final String message;
     private final HttpStatus httpStatus;
+
+
 
 }
