@@ -5,18 +5,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 @RestControllerAdvice
-public class MitdaExceptionHandler {
+public class MitdaaExceptionHandler {
 
-    private static final Logger logger = Logger.getLogger(MitdaExceptionHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(MitdaaExceptionHandler.class.getName());
 
-    @ExceptionHandler(MitdaException.class)
-    public ResponseEntity<ErrorResponse> handleMitdaaException(MitdaException ex) {
+    @ExceptionHandler(MitdaaException.class)
+    public ResponseEntity<ErrorResponse> handleMitdaaException(MitdaaException ex) {
 
         ErrorType errorType = ex.getErrorType();
 

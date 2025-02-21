@@ -1,11 +1,9 @@
 package com.flab.mitdaa.user.controller;
 
 
-import com.flab.mitdaa.exception.MitdaExceptionHandler;
 import com.flab.mitdaa.user.dto.RegisterRequestDto;
 import com.flab.mitdaa.user.service.RegisterService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

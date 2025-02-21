@@ -1,12 +1,11 @@
 package com.flab.mitdaa.user.service;
 
 import com.flab.mitdaa.exception.ErrorType;
-import com.flab.mitdaa.exception.MitdaException;
+import com.flab.mitdaa.exception.MitdaaException;
 import com.flab.mitdaa.user.entity.User;
 import com.flab.mitdaa.user.entity.VerificationToken;
 import com.flab.mitdaa.user.repository.VerificationTokenRepository;
 import com.flab.mitdaa.user.repository.UserRepository;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 
 @Service
@@ -45,25 +43,25 @@ public class VerificationService {
 
         /*토큰 유효청 체크 */
         VerificationToken verificationToken = verificationTokenRepository.findById(token)
-                .orElseThrow(()-> new MitdaException(ErrorType.INVALID_TOKEN
+                .orElseThrow(()-> new MitdaaException(ErrorType.INVALID_TOKEN
                                                    , Map.of("Token",token)
                                                    , (logMessage) -> System.out.println("logMessage : " + logMessage )));
 
         // 토큰 기한 만료 체크
         if (verificationToken.getExpiryTime().isBefore(LocalDateTime.now())) {
             verificationTokenRepository.deleteById(token); // 만료된 토큰 삭제
-            throw new MitdaException(ErrorType.EXPIRED_TOKEN
+            throw new MitdaaException(ErrorType.EXPIRED_TOKEN
                                    , Map.of("Token",token)
                                    , (logMessage) -> System.out.println("logMessage : " + logMessage));
         }
         /*상태 업데이트 */
         User user = userRepository.findByEmail(verificationToken.getEmail())
-                .orElseThrow(()-> new MitdaException(ErrorType.INVALID_EMAIL
+                .orElseThrow(()-> new MitdaaException(ErrorType.INVALID_EMAIL
                                                    , Map.of("Email" , verificationToken.getEmail())
                                                    ,(logMessage) -> System.out.println("logMessage : " + logMessage)));
 
         if (user.isEmailVerified()) {
-            throw new MitdaException(ErrorType.VERIFIED_EMAIL
+            throw new MitdaaException(ErrorType.VERIFIED_EMAIL
                                    , Map.of("Email" , verificationToken.getEmail())
                                    , (logMessage) -> System.out.println("logMessage : " + logMessage ));
         }
@@ -79,12 +77,12 @@ public class VerificationService {
     public void resendVerifyEmail(String email){
         //이메일이 DB에 이미 가입되어있는지 확인
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new MitdaException(ErrorType.NOT_EXIST_EMAIL
+                .orElseThrow(() -> new MitdaaException(ErrorType.NOT_EXIST_EMAIL
                                                      , Map.of("Email" , email)
                                                      , (logMessage) -> System.out.println("logMessage" + logMessage)));
 
         if(user.isEmailVerified()){
-            throw new MitdaException(ErrorType.VERIFIED_EMAIL
+            throw new MitdaaException(ErrorType.VERIFIED_EMAIL
                                    , Map.of("Email" , email)
                                    , (logMessage) -> System.out.println("logMessage" + logMessage));
         }

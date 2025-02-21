@@ -1,7 +1,7 @@
 package com.flab.mitdaa.user.service;
 
 import com.flab.mitdaa.exception.ErrorType;
-import com.flab.mitdaa.exception.MitdaException;
+import com.flab.mitdaa.exception.MitdaaException;
 import com.flab.mitdaa.user.dto.RegisterRequestDto;
 import com.flab.mitdaa.user.entity.User;
 import com.flab.mitdaa.user.repository.UserRepository;
@@ -26,7 +26,7 @@ public class RegisterService {
     @Transactional
     public void registerUser(RegisterRequestDto req) {
         if (userRepository.findByEmail(req.email()).isPresent()) {
-            throw new MitdaException(ErrorType.EMAIL_DUPLICATED , Map.of("Email" , req.email()) ,
+            throw new MitdaaException(ErrorType.EMAIL_DUPLICATED , Map.of("Email" , req.email()) ,
                     (logMessage) -> System.out.println("Log" + logMessage));
         }
         /* 유저 저장 */

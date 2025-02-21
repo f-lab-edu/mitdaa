@@ -7,13 +7,13 @@ import java.util.function.Consumer;
 
 
 @Getter
-public class MitdaException extends RuntimeException{
+public class MitdaaException extends RuntimeException{
 
     private final ErrorType errorType;
     private final Map<String, Object> parameters;
     private final Consumer<String> log;
 
-    public MitdaException(ErrorType errorType , Map<String, Object> parameters, Consumer<String> log) {
+    public MitdaaException(ErrorType errorType , Map<String, Object> parameters, Consumer<String> log) {
         super(errorType.getMessage());
         this.errorType = errorType;
         this.parameters = parameters;
