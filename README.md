@@ -1,4 +1,4 @@
-#아키텍처
+# 아키텍처
 ![image](https://github.com/user-attachments/assets/a892cf8a-db9a-4947-83ac-75b4abf8c965)
 
 
